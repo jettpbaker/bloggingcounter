@@ -27,6 +27,7 @@ export default defineConfig([
     rules: {
       'no-unused-vars': 'warn',
       'vue/no-unused-vars': 'warn',
+      'no-case-declarations': 'off',
     },
   },
 ])

@@ -9,7 +9,6 @@ onMounted(async () => {
   try {
     const response = await fetch('/api/ping')
     data.value = await response.json()
-    console.log(data)
   } catch (err) {
     error.value = err
     console.error(error.value)
@@ -17,6 +16,21 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+const login = () => {
+  window.location.href = '/auth'
+}
+
+async function checkAuthStatus() {
+  const res = await fetch('/auth', { redirect: 'manual' })
+  if (res.status === 200) {
+    const user = await res.json()
+    console.log('Logged in as', user)
+  } else {
+    // not logged in
+    window.location.href = '/auth'
+  }
+}
 </script>
 
 <template>
@@ -28,4 +42,9 @@ onMounted(async () => {
     {{ error.message }}
   </p>
   <p v-else>Loading...</p>
+  <div>
+    <h2>Auth</h2>
+    <button @click="login">Login</button>
+    <button @click="checkAuthStatus">Check Auth Status</button>
+  </div>
 </template>
