@@ -8,7 +8,7 @@ export async function onRequest(context) {
   const client = createClient({
     clientID: 'cloudflare-api',
     issuer: env.OPENAUTH_ISSUER,
-    fetch: (input, init) => env.CloudflareAuth.fetch(input, init),
+    fetch: (input, init) => env.CloudflareAuth.fetch(input, init)
   })
   const url = new URL(request.url)
 
@@ -16,7 +16,7 @@ export async function onRequest(context) {
   console.log('Cookies', cookies.get('access_token'), cookies.get('refresh_token'))
   console.log('All cookies', cookies)
   const verified = await client.verify(subjects, cookies.get('access_token'), {
-    refresh: cookies.get('refresh_token') || undefined,
+    refresh: cookies.get('refresh_token') || undefined
   })
   if (verified) {
     console.log(
