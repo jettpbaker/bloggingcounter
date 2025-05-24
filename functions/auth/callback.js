@@ -9,6 +9,7 @@ export async function onRequest(context) {
   })
   const url = new URL(request.url)
   const redirectURI = url.origin + '/auth/callback'
+  console.log('redirectURI', redirectURI)
 
   try {
     const code = url.searchParams.get('code')

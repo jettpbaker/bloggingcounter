@@ -4,6 +4,7 @@ import { subjects } from '@/lib/subjects'
 export async function onRequest(context) {
   console.log('Running Auth')
   const { request, env } = context
+  console.log('env', env)
   const client = createClient({
     clientID: 'cloudflare-api',
     issuer: env.OPENAUTH_ISSUER,
@@ -26,7 +27,19 @@ export async function onRequest(context) {
       verified
     )
   }
-  if (verified.err) return Response.redirect(url.origin + '/auth/authorize', 302)
+  if (verified.err) {
+    const redirectURI = url.origin + '/auth/authorize'
+    console.log('Redirecting to', redirectURI)
+
+    // Check if this is a fetch request (has Accept: application/json header)
+    const acceptHeader = request.headers.get('Accept')
+    if (acceptHeader && acceptHeader.includes('application/json')) {
+      // Return JSON response for fetch requests instead of redirect
+      return Response.json({ error: 'Not authenticated', redirectTo: redirectURI }, { status: 401 })
+    }
+
+    return Response.redirect(redirectURI, 302)
+  }
   const response = Response.json(verified.subject)
   if (verified.tokens)
     setSession(response, { access: verified.tokens.access, refresh: verified.tokens.refresh })
