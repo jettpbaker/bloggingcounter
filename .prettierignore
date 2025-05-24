@@ -1,0 +1,9 @@
+# Cloudflare configuration files
+wrangler.jsonc
+
+# Build outputs
+dist/
+.wrangler/
+
+# Dependencies  
+node_modules/

@@ -9,7 +9,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "./dist",
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
   /**
    * Smart Placement
@@ -44,5 +44,5 @@
    * Service Bindings (communicate between multiple Workers)
    * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
    */
-  "services": [{ "binding": "CloudflareAuth", "service": "blogging-counter-auth-server" }],
+  "services": [{ "binding": "CloudflareAuth", "service": "blogging-counter-auth-server" }]
 }
