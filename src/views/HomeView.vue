@@ -2,8 +2,6 @@
 import { useUser } from '@clerk/vue';
 
 const { isSignedIn, user, isLoaded } = useUser();
-
-console.log(user);
 </script>
 
 <template>
