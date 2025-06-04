@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1748917661090,
+      "tag": "0000_great_ultimatum",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1748927019398,
+      "tag": "0001_icy_red_hulk",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1749001059454,
+      "tag": "0002_magical_cerise",
+      "breakpoints": true
+    }
+  ]
+}
