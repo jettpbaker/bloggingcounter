@@ -5,9 +5,6 @@ const posts = new Hono()
 
 // Inject secrets into Clerk middleware
 posts.use('*', (c, next) => {
-  // VERY TEMPORARY
-  console.log(c.env)
-
   const secretKey = c.env.CLERK_SECRET_KEY
   const publishableKey = c.env.PUBLIC_CLERK_PUBLISHABLE_KEY
   return clerkMiddleware({ secretKey, publishableKey })(c, next)
