@@ -1,20 +1,9 @@
-import query from './db/queries';
+import { Hono } from 'hono'
+const app = new Hono()
 
-export default {
-	fetch(request, env) {
-		const url = new URL(request.url);
+app.get('/api', (c) => {
+	console.log('Hello From Hono!')
+	return c.json({ message: 'Hello From Hono!!' })
+})
 
-		// Route all posts-related endpoints to our queries handler
-		if (url.pathname.startsWith('/api/posts') || url.pathname.startsWith('/api/query')) {
-			return query.fetch(request, env);
-		}
-
-		if (url.pathname.startsWith('/api/')) {
-			return Response.json({
-				name: 'Cloudflare',
-			});
-		}
-
-		return new Response(null, { status: 404 });
-	},
-};
+export default app
