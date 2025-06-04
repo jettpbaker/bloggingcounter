@@ -1,6 +1,24 @@
 import { Hono } from 'hono'
+import { clerkMiddleware, getAuth } from '@hono/clerk-auth'
 
 const posts = new Hono()
+
+// Inject secrets into Clerk middleware
+posts.use('*', (c, next) => {
+  const secretKey = c.env.CLERK_SECRET_KEY
+  const publishableKey = c.env.PUBLIC_CLERK_PUBLISHABLE_KEY
+  return clerkMiddleware({ secretKey, publishableKey })(c, next)
+})
+
+// Add userId to context
+posts.use('*', (c, next) => {
+  const { userId } = getAuth(c)
+  if (!userId) {
+    return c.json({ message: 'Unauthorized' }, 401)
+  }
+  c.set('userId', userId)
+  return next()
+})
 
 posts.get('/', (c) => {
   return c.json({ message: 'All posts' })
@@ -15,7 +33,11 @@ posts.post('/', (c) => {
 })
 
 posts.delete('/:id', (c) => {
-  return c.json({ message: `Delete post ${c.req.param('id')}` })
+  const userId = c.get('userId')
+  // you now know who is deleting
+  return c.json({
+    message: `Delete post ${c.req.param('id')}`,
+  })
 })
 
 posts.put('/:id', (c) => {
