@@ -56,6 +56,12 @@ const deletePost = async () => {
   const json = await response.json()
   console.log(json)
 }
+
+const logEnv = async () => {
+  const response = await fetch('/api/env')
+  const json = await response.json()
+  console.log(json)
+}
 </script>
 
 <template>
@@ -71,6 +77,7 @@ const deletePost = async () => {
 				<button @click="queryAllPosts">Query All Posts</button> -->
         <button @click="apiTest">API Test</button>
         <button @click="deletePost">Delete Post</button>
+        <button @click="logEnv">Log Env</button>
       </div>
 
       <p>Check the browser console (F12) to see the API responses</p>
