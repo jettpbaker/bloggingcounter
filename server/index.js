@@ -1,20 +1,15 @@
-import query from './db/queries';
+import { Hono } from 'hono'
+import pong from './routes/pong'
+import posts from './routes/posts'
 
-export default {
-	fetch(request, env) {
-		const url = new URL(request.url);
+const app = new Hono()
 
-		// Route all posts-related endpoints to our queries handler
-		if (url.pathname.startsWith('/api/posts') || url.pathname.startsWith('/api/query')) {
-			return query.fetch(request, env);
-		}
+app.route('/api/pong', pong)
+app.route('/api/posts', posts)
 
-		if (url.pathname.startsWith('/api/')) {
-			return Response.json({
-				name: 'Cloudflare',
-			});
-		}
+app.get('/api', (c) => {
+  console.log('Hello From Hono!')
+  return c.json({ message: 'Hello From Hono!!' })
+})
 
-		return new Response(null, { status: 404 });
-	},
-};
+export default app
