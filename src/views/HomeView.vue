@@ -30,7 +30,7 @@ const data = ref(null)
 // };
 
 const apiTest = async () => {
-	const response = await fetch('/api')
+	const response = await fetch('/api/pong')
 	const json = await response.json()
 	data.value = json.message
 	console.log(json)
