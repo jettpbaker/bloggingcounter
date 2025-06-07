@@ -1,12 +1,12 @@
 <script setup>
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
-import { RouterLink } from 'vue-router'
+import Logo from '../Logo/Logo.vue'
 </script>
 
 <template>
-  <v-app-bar :elevation="2" app>
+  <v-app-bar app>
     <v-app-bar-title>
-      <RouterLink to="/">bloggingcounter</RouterLink>
+      <Logo />
     </v-app-bar-title>
 
     <template v-slot:append>
