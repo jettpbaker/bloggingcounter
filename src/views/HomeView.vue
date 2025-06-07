@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useUser } from '@clerk/vue'
+
 const { isSignedIn, user, isLoaded } = useUser()
 
 const data = ref(null)
@@ -56,6 +57,12 @@ const deletePost = async () => {
   const json = await response.json()
   console.log(json)
 }
+
+const DBTest = async () => {
+  const response = await fetch('/api/posts')
+  const json = await response.json()
+  console.log(json)
+}
 </script>
 
 <template>
@@ -71,6 +78,7 @@ const deletePost = async () => {
 				<button @click="queryAllPosts">Query All Posts</button> -->
         <button @click="apiTest">API Test</button>
         <button @click="deletePost">Delete Post</button>
+        <button @click="DBTest">DB Test</button>
       </div>
 
       <p>Check the browser console (F12) to see the API responses</p>
