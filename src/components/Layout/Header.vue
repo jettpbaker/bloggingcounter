@@ -12,12 +12,12 @@ import Logo from '../Logo/Logo.vue'
     <template v-slot:append>
       <SignedOut>
         <SignInButton />
-        <v-spacer class="mr-4" />
       </SignedOut>
 
       <SignedIn>
         <UserButton />
       </SignedIn>
+      <v-spacer class="mr-4" />
     </template>
   </v-app-bar>
 </template>
