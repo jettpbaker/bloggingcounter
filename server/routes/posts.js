@@ -14,9 +14,6 @@ posts.use('*', (c, next) => {
 // Add userId to context
 posts.use('*', (c, next) => {
   const { userId } = getAuth(c)
-  if (!userId) {
-    return c.json({ message: 'Unauthorized' }, 401)
-  }
   c.set('userId', userId)
   return next()
 })
