@@ -6,30 +6,6 @@ const { isSignedIn, user, isLoaded } = useUser()
 
 const data = ref(null)
 
-// Function to create a dummy post
-// const addDummyPost = async () => {
-// 	try {
-// 		console.log('Creating dummy post...');
-// 		const response = await fetch('/api/posts/seed');
-// 		const json = await response.json();
-// 		console.log('Dummy post created:', json);
-// 	} catch (error) {
-// 		console.error('Error creating dummy post:', error);
-// 	}
-// };
-
-// // Function to query all posts
-// const queryAllPosts = async () => {
-// 	try {
-// 		console.log('Querying all posts...');
-// 		const response = await fetch('/api/posts');
-// 		const json = await response.json();
-// 		console.log('All posts:', json);
-// 	} catch (error) {
-// 		console.error('Error querying posts:', error);
-// 	}
-// };
-
 const apiTest = async () => {
   const routes = [
     { method: 'GET', url: '/api/posts' },
