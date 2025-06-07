@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth'
-import DB from '../db/queries.js'
+import DB from '../db/db.js'
 
 const posts = new Hono()
 
@@ -22,32 +22,78 @@ posts.use('*', (c, next) => {
 })
 
 posts.get('/', async (c) => {
-  const posts = await DB.QUERIES.getPosts(c.env)
-  return c.json({ posts })
+  const allPosts = await DB.QUERIES.getPosts(c.env)
+  return c.json({ posts: allPosts })
 })
 
-posts.get('/:id', (c) => {
-  return c.json({ message: `Post ${c.req.param('id')}` })
+posts.get('/:id', async (c) => {
+  const id = Number(c.req.param('id'))
+  const post = await DB.QUERIES.getPostById(c.env, id)
+  if (!post) {
+    return c.json({ message: 'Post not found' }, 404)
+  }
+  return c.json(post)
 })
 
-posts.post('/', (c) => {
-  return c.json({ message: 'Create post' })
-})
+posts.post('/', async (c) => {
+  const auth = getAuth(c)
+  const postData = await c.req.json()
 
-posts.delete('/:id', (c) => {
-  const userId = c.get('userId')
-  // you now know who is deleting
-  return c.json({
-    message: `Delete post ${c.req.param('id')}`,
+  if (!postData.title || !postData.content) {
+    return c.json({ message: 'Title and content are required' }, 400)
+  }
+
+  const newPost = await DB.MUTATIONS.createPost(c.env, {
+    ...postData,
+    authorID: auth.userId,
+    authorFullName: auth.user?.fullName || auth.user?.firstName || 'Anonymous',
   })
+
+  return c.json(newPost, 201)
 })
 
-posts.put('/:id', (c) => {
-  return c.json({ message: `Update post ${c.req.param('id')}` })
+posts.delete('/:id', async (c) => {
+  const userId = c.get('userId')
+  const id = Number(c.req.param('id'))
+
+  const result = await DB.MUTATIONS.deletePost(c.env, { id, userId })
+
+  if (!result) {
+    return c.json({ message: 'Post not found or you are not authorized' }, 404)
+  }
+  return c.json({ message: `Post ${result.deletedId} deleted successfully.` })
 })
 
-posts.patch('/:id', (c) => {
-  return c.json({ message: `Publish post ${c.req.param('id')}` })
+posts.put('/:id', async (c) => {
+  const userId = c.get('userId')
+  const id = Number(c.req.param('id'))
+  const postData = await c.req.json()
+
+  const updatedPost = await DB.MUTATIONS.updatePost(c.env, { id, userId, postData })
+
+  if (!updatedPost) {
+    return c.json({ message: 'Post not found or you are not authorized' }, 404)
+  }
+
+  return c.json(updatedPost)
+})
+
+posts.patch('/:id', async (c) => {
+  const userId = c.get('userId')
+  const id = Number(c.req.param('id'))
+  const { published } = await c.req.json()
+
+  if (typeof published !== 'boolean') {
+    return c.json({ message: 'The "published" field must be a boolean.' }, 400)
+  }
+
+  const updatedPost = await DB.MUTATIONS.updatePostStatus(c.env, { id, userId, published })
+
+  if (!updatedPost) {
+    return c.json({ message: 'Post not found or you are not authorized' }, 404)
+  }
+
+  return c.json(updatedPost)
 })
 
 // May not do this:
