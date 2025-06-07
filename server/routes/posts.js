@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth'
+import DB from '../db/queries.js'
 
 const posts = new Hono()
 
@@ -20,8 +21,9 @@ posts.use('*', (c, next) => {
   return next()
 })
 
-posts.get('/', (c) => {
-  return c.json({ message: 'All posts' })
+posts.get('/', async (c) => {
+  const posts = await DB.QUERIES.getPosts(c.env)
+  return c.json({ posts })
 })
 
 posts.get('/:id', (c) => {
