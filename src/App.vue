@@ -1,17 +1,20 @@
 <script setup>
-import { RouterView } from 'vue-router';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue';
+import Layout from './components/Layout/Layout.vue'
 </script>
 
 <template>
-	<header>
-		<SignedOut>
-			<SignInButton />
-		</SignedOut>
-		<SignedIn>
-			<UserButton />
-		</SignedIn>
-	</header>
-
-	<RouterView />
+  <Layout />
 </template>
+
+<style>
+/* Global text selection color */
+::selection {
+  background-color: #4caf50;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #4caf50;
+  color: white;
+}
+</style>
