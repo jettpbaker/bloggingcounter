@@ -14,6 +14,9 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+// Vue Query
+import { VueQueryPlugin } from '@tanstack/vue-query'
+
 const vuetify = createVuetify({
   theme: {
     defaultTheme: 'dark',
@@ -33,5 +36,6 @@ const app = createApp(App)
 app.use(clerkPlugin, { publishableKey: PUBLISHABLE_KEY })
 app.use(vuetify)
 app.use(router)
+app.use(VueQueryPlugin)
 
 app.mount('#app')

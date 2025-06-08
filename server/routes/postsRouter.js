@@ -2,28 +2,28 @@ import { Hono } from 'hono'
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth'
 import DB from '../db/db.js'
 
-const posts = new Hono()
+const postsRouter = new Hono()
 
 // Inject secrets into Clerk middleware
-posts.use('*', (c, next) => {
+postsRouter.use('*', (c, next) => {
   const secretKey = c.env.CLERK_SECRET_KEY
   const publishableKey = c.env.PUBLIC_CLERK_PUBLISHABLE_KEY
   return clerkMiddleware({ secretKey, publishableKey })(c, next)
 })
 
 // Add userId to context
-posts.use('*', (c, next) => {
+postsRouter.use('*', (c, next) => {
   const { userId } = getAuth(c)
   c.set('userId', userId)
   return next()
 })
 
-posts.get('/', async (c) => {
-  const allPosts = await DB.QUERIES.getPosts(c.env)
-  return c.json({ posts: allPosts })
+postsRouter.get('/', async (c) => {
+  const posts = await DB.QUERIES.getPosts(c.env)
+  return c.json(posts)
 })
 
-posts.get('/:id', async (c) => {
+postsRouter.get('/:id', async (c) => {
   const id = Number(c.req.param('id'))
   const post = await DB.QUERIES.getPostById(c.env, id)
   if (!post) {
@@ -32,7 +32,7 @@ posts.get('/:id', async (c) => {
   return c.json(post)
 })
 
-posts.post('/', async (c) => {
+postsRouter.post('/', async (c) => {
   const auth = getAuth(c)
   const postData = await c.req.json()
 
@@ -49,7 +49,7 @@ posts.post('/', async (c) => {
   return c.json(newPost, 201)
 })
 
-posts.delete('/:id', async (c) => {
+postsRouter.delete('/:id', async (c) => {
   const userId = c.get('userId')
   const id = Number(c.req.param('id'))
 
@@ -61,7 +61,7 @@ posts.delete('/:id', async (c) => {
   return c.json({ message: `Post ${result.deletedId} deleted successfully.` })
 })
 
-posts.put('/:id', async (c) => {
+postsRouter.put('/:id', async (c) => {
   const userId = c.get('userId')
   const id = Number(c.req.param('id'))
   const postData = await c.req.json()
@@ -75,7 +75,7 @@ posts.put('/:id', async (c) => {
   return c.json(updatedPost)
 })
 
-posts.patch('/:id', async (c) => {
+postsRouter.patch('/:id', async (c) => {
   const userId = c.get('userId')
   const id = Number(c.req.param('id'))
   const { published } = await c.req.json()
@@ -94,8 +94,8 @@ posts.patch('/:id', async (c) => {
 })
 
 // May not do this:
-posts.post('/description', (c) => {
+postsRouter.post('/description', (c) => {
   return c.json({ message: 'Generate description' })
 })
 
-export default posts
+export default postsRouter
