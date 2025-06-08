@@ -1,5 +1,4 @@
 import { Hono } from 'hono'
-import { seed as drizzleSeed } from 'drizzle-seed'
 import { drizzle } from 'drizzle-orm/d1'
 import { posts } from '../../schema/schema'
 
@@ -33,8 +32,8 @@ seed.get('/', async (c) => {
       title: 'Third Post',
       content: 'This is the content of the third post',
       description: 'Description of the third post',
-      authorID: 'author1',
-      authorFullName: 'John Doe',
+      authorID: 'author3',
+      authorFullName: 'Lorenzo Cugliari',
       published: true,
       updatedAt: new Date(),
     }
