@@ -9,7 +9,7 @@ const { isPending, isError, data, error } = useQuery({
   queryFn: async () => {
     const response = await fetch('/api/posts')
     const data = await response.json()
-    return data.posts
+    return data
   },
 })
 </script>

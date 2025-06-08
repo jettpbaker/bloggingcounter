@@ -1,12 +1,12 @@
 import { Hono } from 'hono'
 import pong from './routes/pong'
-import posts from './routes/posts'
+import postsRouter from './routes/postsRouter'
 import seed from './routes/seed'
 
 const app = new Hono()
 
 app.route('/api/pong', pong)
-app.route('/api/posts', posts)
+app.route('/api/posts', postsRouter)
 app.route('/api/seed', seed)
 
 app.get('/api', (c) => {
