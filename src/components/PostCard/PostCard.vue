@@ -16,7 +16,7 @@ const formatDate = (date) => {
 </script>
 
 <template>
-  <v-card>
+  <v-card hover link>
     <v-card-title>{{ post.title }}</v-card-title>
     <v-card-subtitle>{{ formatDate(post.updatedAt) }}</v-card-subtitle>
     <v-card-text>{{ post.description }}</v-card-text>
