@@ -4,7 +4,7 @@ import PostsList from '@/components/PostsList/PostsList.vue'
 
 <template>
   <v-container fluid>
-    <v-col cols="12" md="6">
+    <v-col cols="12" md="7">
       <PostsList />
     </v-col>
   </v-container>
