@@ -2,8 +2,10 @@ import { useQuery } from '@tanstack/vue-query'
 
 const fetchPosts = async () => {
   const response = await fetch('/api/posts')
-  const data = await response.json()
-  return data
+  if (!response.ok) {
+    throw new Error('Failed to fetch posts')
+  }
+  return response.json()
 }
 
 const usePosts = () => {
