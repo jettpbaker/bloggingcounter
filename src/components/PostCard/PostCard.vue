@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import formatDate from '@/lib/formatDate'
 
 const props = defineProps({
   post: {
@@ -7,14 +8,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-AU', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-}
 </script>
 
 <template>
