@@ -1,16 +1,8 @@
 <script setup>
-import { useQuery } from '@tanstack/vue-query'
 import PostCard from '@/components/PostCard/PostCard.vue'
+import usePosts from '@/composables/usePosts'
 
-const { isPending, isError, data, error } = useQuery({
-  queryKey: ['posts'],
-  queryFn: async () => {
-    const response = await fetch('/api/posts')
-    const data = await response.json()
-    console.log(data)
-    return data
-  },
-})
+const { isPending, isError, data, error } = usePosts()
 </script>
 
 <template>
